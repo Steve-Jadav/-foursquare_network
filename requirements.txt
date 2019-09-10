@@ -1,0 +1,14 @@
+jupyter
+jupyterlab
+
+# api
+foursquare
+
+# graph
+networkx
+matplotlib
+seaborn
+plotly==4.1.0
+
+numpy
+pandas
