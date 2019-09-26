@@ -13,14 +13,16 @@ def getname(user):
 def collect(userid, max_nodes=MAX_NODES):
     """
     Takes the userid of some user. This id is used as a start id for the crawler.
-        It takes all the friends of the passed userid and then continues by adding friends of
-        friends of friends.
+    It takes all the friends of the passed userid and then continues by adding random 
+    friends of friends of friends.
+
     :param userid:
     :param max_nodes:
     :return: nodes and edges of the network graph
     """
+    
     nodes: list = []  # List of nodes that should go in the graph [id1, id2, id3...]
-    edges: list = []  # List of tuples [(id1, id2), (id1, id3)...]
+    edges: list = []  # List of tuples [(id, id), (id, id)...]
 
     nodes.append(client.users(USER_ID=userid)['user'])
     stack = [userid]
@@ -33,9 +35,9 @@ def collect(userid, max_nodes=MAX_NODES):
             edges.append((userid, friend['id']))
             nodes.append(friend)
 
-    print('num_nodes: ', len(nodes), 'num_edges: ', len(edges))
+    print('Number of nodes: ', len(nodes), '\nNumber of edges: ', len(edges))
     return nodes, edges
 
 
 if __name__ == '__main__':
-    print(collect(123455))
+    collect(123455)
