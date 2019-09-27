@@ -1,3 +1,9 @@
+"""
+This file is only used to scrap the data using Foursquare API. Running this
+requires a stable internet connection.
+
+"""
+
 import foursquare
 import random
 
@@ -11,10 +17,14 @@ def getname(user):
 
 
 def collect(userid, max_nodes=MAX_NODES):
+    
     """
     Takes the userid of some user. This id is used as a start id for the crawler.
     It takes all the friends of the passed userid and then continues by adding random 
-    friends of friends of friends.
+    friends of friends of friends. This method can be used to dynamically fetch data
+    using Foursquare API. However, it usually takes a few seconds to retreive the data 
+    due to traffic on the website. Hence, 'data.json' is used, which is a pre-saved
+    data using this same method.
 
     :param userid:
     :param max_nodes:
