@@ -12,4 +12,4 @@ plotly==4.1.1
 
 numpy==1.17.2
 pandas==0.25.1
-json==2.0.9
+ujson==1.35
