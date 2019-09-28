@@ -203,79 +203,24 @@ def draw_degree_histogram(graph: networkx.Graph):
     for the network, in the form of an html page. 
     The page is automatically redirected. 
     """
-
     degree_sequence = sorted([d for n, d in graph.degree()], reverse=True)
     df = DataFrame(data={'degree': degree_sequence})
     fig = express.histogram(df, x="degree")
     plotly.offline.plot(fig, filename='Degree Distribution.html')
 
 
-def draw_betweenness(graph: networkx.Graph):
-    betweenness = networkx.betweenness_centrality(graph)
-    pos = networkx.circular_layout(graph)
+def compute_betweenness(graph: networkx.Graph):
 
-    edge_x = []
-    edge_y = []
-    for edge in graph.edges():
-        x0, y0 = pos[edge[0]]
-        x1, y1 = pos[edge[1]]
-        edge_x.extend((x0, x1, None))
-        edge_y.extend((y0, y1, None))
+    # Normalizing Factor: 2/((n-1)*(n-2))
+    betweenness = networkx.betweenness_centrality(graph, normalized=True, weight=None) 
+    b_sequence = sorted([(value, key) for key, value in betweenness.items()], reverse=True)
 
-    edge_trace = go.Scatter(x=edge_x, y=edge_y,
-                            line=dict(width=0.5, color="black"),
-                            hoverinfo='none',
-                            mode='lines')
+    print ('\nPrinting betweenness centralities of 50 users\n')
+    # Betweenness Centrality of 50 users
+    for centrality, userid in b_sequence[10:60]:
+        print ('User ID: ' + str(userid) + ', Betweenness Centrality: ' + str(centrality))
+        print ('---------------------------------------------------------------')
 
-    node_x = []
-    node_y = []
-    for node in graph.nodes():
-        x, y = pos[node]
-        node_x.append(x)
-        node_y.append(y)
-
-    node_trace = go.Scatter(
-        x=node_x, y=node_y,
-        mode='markers',
-        hoverinfo='text',
-        marker=dict(
-            showscale=True,
-            colorscale='Hot',
-            reversescale=True,
-            color=[],
-            size=10,
-            colorbar=dict(
-                thickness=15,
-                title='Pagerank of node',
-                xanchor='left',
-                titleside='right'
-            )))
-
-    node_adjacencies = []
-    node_text = []
-    for node, adjacency_dict in graph.adjacency():
-        node_adjacencies.append(len(adjacency_dict))
-        node_text.append(getname(graph.nodes[node]))
-
-    node_trace.marker.color = node_adjacencies
-    node_trace.text = node_text
-
-    fig = go.Figure(data=[edge_trace, node_trace],
-                    layout=go.Layout(
-                        title='Foursquare Network Betweenness',
-                        showlegend=False,
-                        hovermode='closest',
-                        margin=dict(b=20, l=5, r=5, t=40),
-                        annotations=[dict(
-                            text="CSE 472 - Social Media Mining",
-                            showarrow=False,
-                            xref="paper", yref="paper",
-                            x=0.005, y=-0.002)],
-                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
-                    )
-
-    plotly.offline.plot(fig, filename='betweenness.html')
 
 
 if __name__ == '__main__':
@@ -284,7 +229,8 @@ if __name__ == '__main__':
     # write_to_file(graph, 'data.json')
 
     graph = read_from_file('data/data.json')
+    compute_betweenness(graph)
     draw_network(graph)
-    # draw_page_rank(graph)
-    # draw_degree_histogram(graph)
-    # draw_betweenness(graph)
+    draw_page_rank(graph)
+    draw_degree_histogram(graph)
+    
