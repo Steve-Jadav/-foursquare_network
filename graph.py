@@ -53,8 +53,10 @@ def draw_network(graph: networkx.Graph):
     edge_x = []
     edge_y = []
     for edge in graph.edges():
-        edge_x.extend(tuple(pos[edge[0]]) + (None,))
-        edge_y.extend(tuple(pos[edge[1]]) + (None,))
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_x.extend((x0, x1, None))
+        edge_y.extend((y0, y1, None))
 
     edge_trace = go.Scatter(x=edge_x, y=edge_y,
                             line=dict(width=0.5, color="black"),
@@ -135,8 +137,10 @@ def draw_page_rank(graph: networkx.Graph):
     edge_x = []
     edge_y = []
     for edge in graph.edges():
-        edge_x.extend(tuple(pos[edge[0]]) + (None,))
-        edge_y.extend(tuple(pos[edge[1]]) + (None,))
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_x.extend((x0, x1, None))
+        edge_y.extend((y0, y1, None))
 
     edge_trace = go.Scatter(x=edge_x, y=edge_y,
                             line=dict(width=0.5, color="black"),
@@ -213,8 +217,10 @@ def draw_betweenness(graph: networkx.Graph):
     edge_x = []
     edge_y = []
     for edge in graph.edges():
-        edge_x.extend(tuple(pos[edge[0]]) + (None,))
-        edge_y.extend(tuple(pos[edge[1]]) + (None,))
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_x.extend((x0, x1, None))
+        edge_y.extend((y0, y1, None))
 
     edge_trace = go.Scatter(x=edge_x, y=edge_y,
                             line=dict(width=0.5, color="black"),
