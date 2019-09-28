@@ -63,17 +63,17 @@ def draw_network(graph: networkx.Graph):
 
     node_x = []
     node_y = []
-    hovertext = []
+    # hovertext = []
     for userid, user in graph.nodes(data=True):
         x, y = pos[userid]
         node_x.append(x)
         node_y.append(y)
-        hovertext.append(getname(user))
+        # hovertext.append(getname(user))
 
     node_trace = go.Scatter(
         x=node_x, y=node_y,
         mode='markers',
-        hovertext=hovertext,
+        # hovertext=hovertext,
         hoverinfo='text',
         marker=dict(
             showscale=True,
@@ -94,10 +94,10 @@ def draw_network(graph: networkx.Graph):
 
     node_adjacencies = []
     node_text = []
-    for node, adjacencies in enumerate(graph.adjacency()):
-        node_adjacencies.append(len(adjacencies[1]))
-        node_text.append('Degree: ' + str(len(adjacencies[1])) +
-                         ', User ID: ' + str(adjacencies[0]))
+    for node, adjacency_dict in graph.adjacency():
+        node_adjacencies.append(len(adjacency_dict))
+        node_text.append('Name: ' + str(getname(graph.nodes[node])) +
+                         '<br> Degree: ' + str(len(adjacency_dict)))
 
     node_trace.marker.color = node_adjacencies
     node_trace.text = node_text
@@ -269,7 +269,7 @@ def draw_betweenness(graph: networkx.Graph):
                         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
                     )
 
-    plotly.offline.plot(fig, filename='Pagerank.html')
+    plotly.offline.plot(fig, filename='betweenness.html')
 
 
 if __name__ == '__main__':
@@ -278,7 +278,7 @@ if __name__ == '__main__':
     # write_to_file(graph, 'data.json')
 
     graph = read_from_file('data/data.json')
-    # draw_network(graph)
+    draw_network(graph)
     # draw_page_rank(graph)
     # draw_degree_histogram(graph)
-    draw_betweenness(graph)
+    # draw_betweenness(graph)

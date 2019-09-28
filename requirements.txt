@@ -1,13 +1,8 @@
-jupyter
-jupyterlab
-
 # api
 foursquare
 
 # graph
 networkx==2.3
-matplotlib==3.1.1
-seaborn==0.9.0
 plotly==4.1.1
 
 numpy==1.17.2
