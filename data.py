@@ -3,7 +3,6 @@ This file is only used to scrap the data using Foursquare API. Running this
 requires a stable internet connection.
 
 """
-
 import foursquare
 import random
 
