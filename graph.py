@@ -3,6 +3,8 @@ import networkx
 
 # For handling data
 import collections
+
+import pandas
 import ujson
 from pandas import DataFrame
 from typing import List
@@ -177,8 +179,11 @@ def draw_page_rank(graph: networkx.Graph):
         node_adjacencies.append(len(adjacency_dict))
         node_text.append(' '.join(('Name:', str(getname(graph.nodes[node])), '<br>', 'Page Rank:', str(page_rank.get(node)))))
 
-    node_trace.marker.color = node_adjacencies
-    node_trace.text = node_text
+    node_trace.marker.color = list(page_rank.values())
+    node_trace.text = [
+        ' '.join(('Name:', str(getname(graph.nodes[k])), '<br>', 'Page Rank:', str(v)))
+        for k, v in page_rank.items()
+    ]
 
     fig = go.Figure(data=[edge_trace, node_trace],
                     layout=go.Layout(
