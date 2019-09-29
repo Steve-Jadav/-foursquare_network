@@ -215,17 +215,15 @@ def draw_degree_histogram(graph: networkx.Graph):
 
 
 def compute_betweenness(graph: networkx.Graph):
-
     # Normalizing Factor: 2/((n-1)*(n-2))
-    betweenness = networkx.betweenness_centrality(graph, normalized=True, weight=None) 
-    b_sequence = sorted([(value, key) for key, value in betweenness.items()], reverse=True)
+    betweenness = networkx.betweenness_centrality(graph, normalized=True, weight=None)
 
-    print ('\nPrinting betweenness centralities of 50 users\n')
-    # Betweenness Centrality of 50 users
-    for centrality, userid in b_sequence[10:60]:
-        print ('User ID: ' + str(userid) + ', Betweenness Centrality: ' + str(centrality))
-        print ('---------------------------------------------------------------')
-
+    df = pandas.DataFrame(
+        [(k, getname(graph.nodes[k]), v) for k, v in betweenness.items()],
+        columns=('User ID', 'Name', 'Betweenness Centrality')
+    )
+    print(df.sort_values('Betweenness Centrality', ascending=False).head(25))
+    return df
 
 
 if __name__ == '__main__':
@@ -238,4 +236,3 @@ if __name__ == '__main__':
     draw_network(graph)
     draw_page_rank(graph)
     draw_degree_histogram(graph)
-    
