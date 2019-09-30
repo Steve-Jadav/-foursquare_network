@@ -3,7 +3,6 @@ import networkx
 
 # For handling data
 import collections
-
 import pandas
 import ujson
 from pandas import DataFrame
@@ -210,19 +209,19 @@ def draw_degree_histogram(graph: networkx.Graph):
     """
     degree_sequence = sorted([d for n, d in graph.degree()], reverse=True)
     df = DataFrame(data={'degree': degree_sequence})
-    fig = express.histogram(df, x="degree")
+    fig = express.histogram(df, x="degree", title='Degree Distribution of Network')
     plotly.offline.plot(fig, filename='Degree Distribution.html')
 
 
 def compute_betweenness(graph: networkx.Graph):
-    # Normalizing Factor: 2/((n-1)*(n-2))
+
     betweenness = networkx.betweenness_centrality(graph, normalized=True, weight=None)
 
     df = pandas.DataFrame(
         [(k, getname(graph.nodes[k]), v) for k, v in betweenness.items()],
         columns=('User ID', 'Name', 'Betweenness Centrality')
     )
-    print(df.sort_values('Betweenness Centrality', ascending=False).head(25))
+    print(df.sort_values('Betweenness Centrality', ascending=False).head(55).tail(25))
     return df
 
 
